@@ -1,6 +1,6 @@
-# QuickviewJS: A Lightweight JavaScript Template Engine
+# QuickViewJS: A Lightweight JavaScript Template Engine
 Overview
-QuickviewJS is a minimalistic yet powerful JavaScript-based template engine designed to simplify front-end development. It allows developers to bind JSON data to HTML templates with ease, providing seamless rendering and updates without a hefty framework. With support for nested objects and array iteration, QuickviewJS serves as a convenient tool for small to medium-sized projects.
+QuickViewJS is a minimalistic yet powerful JavaScript-based template engine designed to simplify front-end development. It allows developers to bind JSON data to HTML templates with ease, providing seamless rendering and updates without a hefty framework. With support for nested objects and array iteration, QuickviewJS serves as a convenient tool for small to medium-sized projects.
 
 ### Key Features
 Data Binding: Dynamically replace placeholders in your HTML templates using data fetched from various sources, such as APIs or local variables.
