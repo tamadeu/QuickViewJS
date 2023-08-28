@@ -1,0 +1,3 @@
+qv({
+    "siteName": "quickviewJS"
+});

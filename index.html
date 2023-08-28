@@ -4,19 +4,20 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>{{ siteName }}</title>
+  <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+  <link rel="icon" href="/favicon.ico" type="image/x-icon">
+  <script src="js/quickview.js"></script>
+
 </head>
 <body>
-    @include('menu')
-    <h1>{{ date }}</h1>
-    <h2>{{ qttyProducts }}</h2>
+  @include('menu')
 
-    <ul>
-      {{# products }}
-        <li>Title: {{ title }}, Id: {{ id }}</li>
-      {{/ products }}
-    </ul>
+  @if(qttyProducts < 50)
+    <p>Temos menos de 50 produtos</p>
+  @else
+    <p>Temos mais de 50 produtos</p>
+  @endif
 
-  <script src="quickview.js"></script>
-  <script src="main.js"></script>
+    <script src="js/main.js"></script>
 </body>
 </html>
