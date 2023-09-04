@@ -42,9 +42,9 @@ qv({
 <!-- index.html -->
 <h1>{{ siteName }}</h1>
 <div>
-  {{# users }}
+  @foreach('users')
   <p>Name: {{ fname }}, Age: {{ age }}</p>
-  {{/ users }}
+  @endforeach
 </div>
 ```
 By following this simple structure, developers can achieve powerful rendering capabilities with minimal effort, making QuickviewJS a go-to choice for developers looking for lightweight yet effective solutions.
