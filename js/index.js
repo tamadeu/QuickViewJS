@@ -1,3 +1,0 @@
-qv({
-    "siteName": "quickviewJS"
-});
