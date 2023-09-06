@@ -1,4 +1,5 @@
 # QuickViewJS: A Lightweight JavaScript Template Engine
+![quickview.js logo](https://raw.githubusercontent.com/tamadeu/QuickViewJS/main/qjs.png)
 ## Overview
 
 QuickView is a lightweight JavaScript-based templating engine designed to dynamically render HTML pages. It offers a simple syntax to embed variables and execute conditional statements and loops within HTML files.
