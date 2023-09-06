@@ -39,7 +39,8 @@ function qv(dataSource) {
         });
     }
 
-    function processForDirectives(content, data) {
+/* FOR LOOP NOT READY YET     
+function processForDirectives(content, data) {
         const forRegex = /@for\(([^)]+)\)((.|\n)*?)@endfor/gs;
 
         return content.replace(forRegex, (match, forCondition, block) => {
@@ -58,12 +59,15 @@ function qv(dataSource) {
                 const modifiedBlock = block.replace(/\{\{(.*?)\{\{i\}\}(.*?)\}\}/g, `{{\$1\${${varName}}\$2}}`);
 
                 // Wrap the loop parts with a function, execute it
-                let loopFunction = new Function('data, renderTemplate', `with (data) {
+                let loopFunction = new Function('data', `with (data) {
                     let output = [];
                     ${initializer}
                     while(${condition}) {
-                        let replacedBlock = renderTemplate(\`${modifiedBlock}\`, data, { ${varName}: ${varName} });
-                        output.push(replacedBlock);
+                        let dynamicBlock = \`${block}\`.replace(/\\{\\{\\s*(.*?)\\{i\\}(.*?)\\s*\\}\\}/g, (match, prefix, postfix) => {
+                            let expression = prefix + \`\${${varName}}\` + postfix;
+                            return eval(expression);
+                        });
+                        output.push(dynamicBlock);
                         ${iterator}
                     }
                     return output.join('');
@@ -81,7 +85,7 @@ function qv(dataSource) {
             return outputBlock;
         });
 
-    }
+    } */
 
 
     function processConditionalDirectives(content, data) {
@@ -121,7 +125,7 @@ function qv(dataSource) {
 
 
 
-    function fetchDataAndRender() {
+    async function fetchDataAndRender() {
         var filename = window.location.pathname.split('/').pop();
 
         if (filename == '') {
@@ -146,18 +150,21 @@ function qv(dataSource) {
             }
         }
 
-        Promise.all(promises).then(() => {
+        Promise.all(promises).then(async () => {
+            const response = await fetch(htmlFileUrl);
+            let htmlContent = await response.text();
+
             fetch(htmlFileUrl)
                 .then(response => response.text())
-                .then(htmlContent => {
+                .then(async htmlContent => {
                     // Process includes
-                    htmlContent = processIncludeDirectives(htmlContent);
+                    htmlContent = await processIncludeDirectives(htmlContent);
 
                     // Process conditionals
                     htmlContent = processConditionalDirectives(htmlContent, data);
 
                     // Process for loops
-                    htmlContent = processForDirectives(htmlContent, data);
+                    // htmlContent = processForDirectives(htmlContent, data);
 
                     // Render templates
                     let renderedContent = renderTemplate(htmlContent, data);
@@ -174,29 +181,31 @@ function qv(dataSource) {
     }
 
 
-    function processIncludeDirectives(content) {
+    async function processIncludeDirectives(content) {
         const includeRegex = /@include\('([\w.-]+)'\)/g;
-        return content.replace(includeRegex, (match, fileName) => {
-            return fetchIncludeContent(fileName);
-        });
+        let matches;
+        let allIncludedContent = content;
+    
+        while ((matches = includeRegex.exec(content)) !== null) {
+            const fileName = matches[1];
+            const includedContent = await fetchIncludeContent(fileName);
+            allIncludedContent = allIncludedContent.replace(matches[0], includedContent);
+        }
+    
+        return allIncludedContent;
     }
-
+    
     async function fetchIncludeContent(fileName) {
         const includeFilePath = fileName + '.html';
-        let includedContent = '';
-
-        try {
-            const response = await fetch(includeFilePath);
-            if (response.ok) {
-                includedContent = await response.text();
-            }
-        } catch (error) {
+        const response = await fetch(includeFilePath);
+    
+        if (response.status === 200) {
+            return await response.text();
+        } else {
             console.error(`Error fetching included file: ${includeFilePath}`);
+            return '';
         }
-
-        return includedContent;
-    }
-
+    } 
 
     fetchDataAndRender();
 }
