@@ -1,50 +1,118 @@
 # QuickViewJS: A Lightweight JavaScript Template Engine
-Overview
-QuickViewJS is a minimalistic yet powerful JavaScript-based template engine designed to simplify front-end development. It allows developers to bind JSON data to HTML templates with ease, providing seamless rendering and updates without a hefty framework. With support for nested objects and array iteration, QuickviewJS serves as a convenient tool for small to medium-sized projects.
+## Overview
 
-### Key Features
-Data Binding: Dynamically replace placeholders in your HTML templates using data fetched from various sources, such as APIs or local variables.
+QuickView is a lightweight JavaScript-based templating engine designed to dynamically render HTML pages. It offers a simple syntax to embed variables and execute conditional statements and loops within HTML files.
 
-**Nested Object Support**: Deeply navigate through JSON objects using dot notation within your HTML templates.
+## Table of Contents
 
-**Array Iteration**: Automatically loop over arrays in your data and render corresponding HTML elements.
+- [Features](#features)
+- [Installation](#installation)
+- [Usage](#usage)
+  - [In HTML File](#in-html-file)
+  - [In JavaScript File](#in-javascript-file)
+- [Examples](#examples)
+  - [Example 1: Using Local Data](#example-1-using-local-data)
+  - [Example 2: Using External Data](#example-2-using-external-data)
+- [Contributions](#contributions)
 
-**Include Directives**: Extend your templates by including partial HTML files, encouraging modularity and reusability.
+## Features
 
-**Async and Sync Data Fetching**: Incorporate data into your templates either synchronously or asynchronously, depending on your requirements.
+- **Variable Interpolation**: Use `{{ variableName }}` for dynamic content.
+- **Conditional Blocks**: Execute conditionals using `@if`, `@elseif`, `@else`, and `@endif`.
+- **Looping**: Loop through arrays with `@foreach` and `@endforeach`.
+- **File Inclusion**: Include external HTML files using `@include('fileName')`.
+- **Data Fetching**: Fetch and embed JSON data from URLs or objects.
 
-**Clear Syntax**: Utilizes a straightforward syntax with {{ }} tags for data and {{# }}...{{/ }} tags for array loops, making it easy to understand and maintain.
+## Installation
 
-### How It Works
-**Data Fetching**: QuickviewJS first gathers all necessary data from various sources defined in the dataSource object, including local variables or external APIs.
+Include the `quickview.js` file in your HTML project:
 
-**HTML Parsing**: The engine fetches and reads the HTML file, applying any @include directives to embed additional HTML files.
+```
+<script src="path/to/quickview.js"></script>
+```
 
-**Template Rendering**: Data is then bound to the HTML using the renderTemplate function. Nested objects and arrays are processed using renderArrayTemplate.
+## Usage
+### In HTML File
+Variable Replacement
 
-**Final Output**: The fully rendered HTML content replaces the existing content in the document, providing a seamless experience to the user.
+```
+<h1>{{ siteName }}</h1>
+```
+### Conditionals
 
-## Usage Example
+```
+@if(someCondition)
+  <!-- HTML content -->
+@elseif(anotherCondition)
+  <!-- HTML content -->
+@else
+  <!-- HTML content -->
+@endif
+```
+### Loops
 
-```javascript
-// main.js
-const users = [
-  { "fname": "Alice", "age": 25 },
-  // ... more users
-];
+```
+@foreach(items)
+  <p>{{ itemName }}</p>
+@endforeach
+```
+### File Inclusion
+
+```
+@include('header')
+```
+
+## In JavaScript File
+Initialize the QuickView engine with a data source object containing either local variables or external URLs:
+
+```
 qv({
-  "users": users,
-  "siteName": "MyWebsite",
-  "date": new Date(),
+  "localVariable": "value",
+  "externalData": "http://example.com/data.json",
 });
 ```
-```html
-<!-- index.html -->
-<h1>{{ siteName }}</h1>
-<div>
-  @foreach('users')
-  <p>Name: {{ fname }}, Age: {{ age }}</p>
-  @endforeach
-</div>
+## Examples
+### Example 1: Using Local Data
+#### HTML File (index.html):
+
 ```
-By following this simple structure, developers can achieve powerful rendering capabilities with minimal effort, making QuickviewJS a go-to choice for developers looking for lightweight yet effective solutions.
+<h1>{{ siteName }}</h1>
+@foreach(users)
+  <p>Name: {{ name }}, Age: {{ age }}</p>
+@endforeach
+```
+#### JavaScript:
+
+```
+
+qv({
+  "siteName": "My Site",
+  "users": [
+    {"name": "Alice", "age": 25},
+    {"name": "Bob", "age": 30}
+  ]
+});
+```
+
+### Example 2: Using External Data
+
+#### JavaScript:
+
+```
+qv({
+  "siteName": "My Site",
+  "users": "http://example.com/users.json"
+});
+```
+#### JSON File (users.json):
+
+```
+[
+  {"name": "Alice", "age": 25},
+  {"name": "Bob", "age": 30}
+]
+```
+
+### Contributions
+Contributions are welcome! Feel free to open an issue or submit a pull request to improve the engine.
+
