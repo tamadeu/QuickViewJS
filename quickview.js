@@ -182,7 +182,7 @@ function processForDirectives(content, data) {
 
 
     async function processIncludeDirectives(content) {
-        const includeRegex = /@include\('([\w.-]+)'\)/g;
+        const includeRegex = /@include\(['"]([\w.-/]+)['"]\)/g;
         let matches;
         let allIncludedContent = content;
     
